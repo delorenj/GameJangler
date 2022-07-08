@@ -104,5 +104,6 @@ dist
 .tern-port
 node_modules
 out
-./idea
+.idea
+GameJangler-*
 
