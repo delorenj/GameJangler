@@ -1,0 +1,19 @@
+{
+  "name": "gamejangler",
+  "version": "1.0.0",
+  "description": "Local cloud management for all you gaming platforms and stuff",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "git+https://github.com/delorenj/GameJangler.git",
+  "author": "Jarad DeLorenzo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/delorenj/GameJangler/issues"
+  },
+  "homepage": "https://github.com/delorenj/GameJangler#readme",
+  "devDependencies": {
+    "electron": "^19.0.8"
+  }
+}
