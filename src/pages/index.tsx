@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Welcome to Tauri!</h1>
+      <h1>Welcome to GameJangler!</h1>
 
       <div className="row">
         <span className="logos">

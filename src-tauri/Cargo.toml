@@ -1,8 +1,8 @@
 [package]
 name = "game-jangler"
 version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "Jangle your game saves across multiple platforms"
+authors = ["Jarad DeLorenzo"]
 license = ""
 repository = ""
 edition = "2021"
