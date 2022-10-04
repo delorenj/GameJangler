@@ -4,6 +4,7 @@ import Image from "next/image";
 import reactLogo from "../assets/react.svg";
 import tauriLogo from "../assets/tauri.svg";
 import nextLogo from "../assets/next.svg";
+import { Navbar } from "../components/navbar";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -16,6 +17,7 @@ function App() {
 
   return (
     <div className="container">
+      <Navbar />
       <h1>Welcome to GameJangler!</h1>
 
       <div className="row">
