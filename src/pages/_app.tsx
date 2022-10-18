@@ -1,9 +1,9 @@
-import type { AppProps } from "next/app";
+import "@/styles/globals.scss"
 
-import "../style.css";
-import "../App.css";
+import type { AppProps } from "next/app"
 
-// This default export is required in a new `pages/_app.js` file.
-export default function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
 }
+
+export default MyApp

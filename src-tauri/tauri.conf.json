@@ -1,14 +1,14 @@
 {
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist",
-    "withGlobalTauri": false
+    "beforeBuildCommand": "yarn next-build",
+    "beforeDevCommand": "yarn next-start",
+    "devPath": "http://localhost:3000",
+    "distDir": "../out"
   },
   "package": {
-    "productName": "game-jangler",
-    "version": "0.0.0"
+    "productName": "tauri-nextjs-template",
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
@@ -56,10 +56,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
         "resizable": true,
-        "title": "game-jangler",
-        "width": 800
+        "title": "Tauri NextJS App",
+        "width": 1280,
+        "height": 800
       }
     ]
   }

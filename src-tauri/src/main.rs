@@ -3,15 +3,24 @@
     windows_subsystem = "windows"
 )]
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+use std::time::{SystemTime, UNIX_EPOCH};
+
 #[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+fn on_button_clicked() -> String {
+    let start = SystemTime::now();
+    let since_the_epoch = start
+        .duration_since(UNIX_EPOCH)
+        .expect("Time went backwards")
+        .as_millis();
+    format!(
+        "on_button_clicked called from Rust! (timestamp: {}ms)",
+        since_the_epoch
+    )
 }
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![on_button_clicked])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
