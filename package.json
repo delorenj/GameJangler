@@ -16,6 +16,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.3",
     "@tauri-apps/api": "^1.0.2",
     "clsx": "^1.2.1",
     "next": "^12.3.1",
