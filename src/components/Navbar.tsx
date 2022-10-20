@@ -7,23 +7,14 @@ import { Navtabs } from "@/components/Navtabs"
 export const Navbar = () => {
   return (
     <nav className="py-2.5">
-      <div className="container flex flex-wrap bg-green-100 px-4 ">
-        <div className="flex-1 bg-red-100 sm:bg-red-400">
+      <div className="container flex flex-col flex-wrap gap-5 px-4 lg:flex-row lg:gap-0">
+        <div className="flex-1 content-center justify-center lg:justify-start">
           <Navlogo />
         </div>
-        <div className="flex-1 bg-amber-100">
-          <Tab.Group>
-            <Tab.List className="flex">
-              <Tab>Dashboard</Tab>
-              <Tab>Apps</Tab>
-              <Tab>Saves</Tab>
-              <Tab>Settings</Tab>
-            </Tab.List>
-          </Tab.Group>
+        <div className="grow lg:self-center">
+          <Navtabs />
         </div>
-        <div className="flex-1 bg-blue-100 text-right">
-          <Navhamburger />
-        </div>
+        <div className="flex-1 text-right">{/*<Navhamburger />*/}</div>
       </div>
     </nav>
   )

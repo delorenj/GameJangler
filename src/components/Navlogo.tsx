@@ -1,6 +1,6 @@
 export const Navlogo = () => {
   return (
-    <a href="#" className="flex items-center">
+    <a href="#" className="flex justify-center lg:justify-start">
       <img
         src="https://flowbite.com/docs/images/logo.svg"
         className="mr-3 h-6 sm:h-9"
