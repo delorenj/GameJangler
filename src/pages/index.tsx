@@ -17,17 +17,19 @@ const Home: NextPage = () => {
 
       <main className="flex flex-col justify-center">
         <Navbar />
-        <h1 className="m-0 text-center text-6xl">
-          Welcome to{" "}
-          <a
-            href="https://nextjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline focus:underline active:underline"
-          >
-            Game Jangler
-          </a>
-        </h1>
+        <div className="flex h-[800px] justify-center">
+          <h1 className="m-0 self-center text-center text-6xl">
+            Welcome to{" "}
+            <a
+              href="https://nextjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline focus:underline active:underline"
+            >
+              Game Jangler
+            </a>
+          </h1>
+        </div>
       </main>
 
       <footer className="flex flex-1 flex-grow-0 items-center justify-center border-t border-gray-200 py-4">
