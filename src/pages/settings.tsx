@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   const {currentPage, setCurrentPage} = useGlobalContext();
 
   useEffect(() => {
-    setCurrentPage('Home')
+    setCurrentPage('Settings')
   }, []);
 
   return (
@@ -26,15 +26,7 @@ const Home: NextPage = () => {
         <Navbar />
         <div className="flex h-[800px] justify-center">
           <h1 className="m-0 self-center text-center text-6xl">
-            Welcome to{" "}
-            <a
-              href="https://nextjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline focus:underline active:underline"
-            >
-              Game Jangler
-            </a>
+            {currentPage}
           </h1>
         </div>
       </main>
