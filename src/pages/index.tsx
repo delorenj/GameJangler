@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import { Navbar } from "@/components/Navbar"
 import { useGlobalContext } from "@/context/state";
 import { Container } from "@/components/Container";
+import { StorageCarousel } from "@/components/StorageCarousel";
+import { AppCarousel } from "@/components/AppCarousel";
+import { SaveCarousel } from "@/components/SaveCarousel";
 
 const Home: NextPage = () => {
   const {currentPage, setCurrentPage} = useGlobalContext();
@@ -17,17 +20,13 @@ const Home: NextPage = () => {
 
   return (
     <Container>
-      <h1 className="m-0 self-center text-center text-6xl">
-        Welcome to{" "}
-        <a
-          href="https://nextjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:underline focus:underline active:underline"
-        >
-          Game Jangler
-        </a>
-      </h1>
+      <div className='flex w-full'>
+        <ul className='flex flex-1 flex-col w-1/2'>
+          <li><SaveCarousel /></li>
+          <li><AppCarousel /></li>
+          <li><StorageCarousel /></li>
+        </ul>
+      </div>
     </Container>
   )
 }

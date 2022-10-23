@@ -13,7 +13,7 @@ export const Container = ({children}) => {
 
       <main className="flex flex-col justify-center">
         <Navbar />
-        <div className="flex h-[800px] justify-center">
+        <div className="flex h-[800px] justify-center p-20 ">
           {children}
         </div>
       </main>
