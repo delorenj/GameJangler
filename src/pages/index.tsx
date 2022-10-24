@@ -21,7 +21,7 @@ const Home: NextPage = () => {
   return (
     <Container>
       <div className='flex w-full'>
-        <ul className='flex flex-1 flex-col w-1/2'>
+        <ul className='flex flex-1 flex-col w-1/2 gap-20'>
           <li><SaveCarousel /></li>
           <li><AppCarousel /></li>
           <li><StorageCarousel /></li>
