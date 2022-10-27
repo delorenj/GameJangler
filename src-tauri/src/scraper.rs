@@ -12,7 +12,7 @@ struct Platform {
 
 impl Game {
     fn new(&mut self) {
-        self.title = `"No Title";
+        self.title = "No Title".to_string();
 
     }
 }
