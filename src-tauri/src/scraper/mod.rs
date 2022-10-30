@@ -10,19 +10,36 @@ struct PlatformInstance{
     location: String
 }
 
-trait Scrapable<T> {
-    fn scrape() -> Vec<T>;
+trait Scrapable<ScrapeType> {
+    fn start_scrape(&self, &mut result: Vec<ScrapeType>, drive_letter: &char);
 }
 
-struct Scraper<T> {
-    drive_letter: char,
-    result: Vec<T>
-}
+struct Steam;
 
-impl Scraper<PlatformInstance> {
-    fn new(drive_letter: &char) -> Self {
-        Self.drive_letter = *drive_letter;
-        let mut result = Vec::new();
-        return Self
+impl Scrapable<ScrapeType> for Steam {
+    fn start_scrape(&self, &mut result: Vec<ScrapeType>, drive_letter: &char) {
+        println!("Scanning for Steam platforms on drive letter {}", drive_letter);
     }
 }
+
+struct Epic;
+impl Scrapable<ScrapeType> for Steam {
+    fn start_scrape(&self, &mut result: Vec<T>, drive_letter: &char) {
+        println!("Scanning for Epic platforms on drive letter {}", drive_letter);
+    }
+}
+
+struct Scraper<PlatformType: Scrapable<ScrapeType>> {
+    platform_type: PlatformType
+}
+
+impl<PlatformType: Scrapable<ScrapeType>> Scraper<PlatformType> {
+    pub fn new(platform_type: PlatformType) -> Self {
+        Self { platform_type }
+    }
+    pub fn scrape(&self, &mut result: Vec<ScrapeType>, drive_letter: &char) {
+        self.platform_type.start_scrape(result, drive_letter);
+    }
+}
+
+
