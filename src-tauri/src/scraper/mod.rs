@@ -1,15 +1,21 @@
-struct GameInstance {
+pub struct GameInstance {
     title: String,
     location: String,
     owning_platform: PlatformInstance
 }
 
-struct PlatformInstance{
+pub struct PlatformInstance{
     id: String, //UUID
-    name: String,
-    location: String
+    pub name: String,
+    pub location: String
 }
 
+impl PlatformInstance {
+    pub fn new() -> Self {
+        Self.id = nanite!();
+        return Self;
+    }
+}
 trait Scrapable<ScrapeType> {
     fn start_scrape(&self, &mut result: Vec<ScrapeType>, drive_letter: &char);
 }

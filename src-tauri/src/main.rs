@@ -4,6 +4,7 @@
 )]
 
 use std::time::{SystemTime, UNIX_EPOCH};
+use app::scraper::PlatformInstance;
 
 #[tauri::command]
 fn on_button_clicked() -> String {
@@ -16,6 +17,16 @@ fn on_button_clicked() -> String {
         "on_button_clicked called from Rust! (timestamp: {}ms)",
         since_the_epoch
     )
+}
+
+#[tauri::command]
+fn scan_for_platform(platform_name: String) -> Vec<PlatformInstance> {
+    let mut result: Vec<PlatformInstance> = Vec::new();
+    let mut platform = PlatformInstance::new();
+    platform.name = "Test Platform".to_string();
+    platform.location = "C:/Some/Test/Path".to_string();
+    result.push(platform);
+    return result;
 }
 
 fn main() {
