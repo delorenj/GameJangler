@@ -16,8 +16,8 @@
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
+      "category": "Gaming",
+      "copyright": "2022",
       "deb": {
         "depends": []
       },
