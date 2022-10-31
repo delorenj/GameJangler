@@ -22,9 +22,10 @@ fn on_button_clicked() -> String {
 #[tauri::command]
 fn scan_for_platform(platform_name: String) -> Vec<PlatformInstance> {
     let mut result: Vec<PlatformInstance> = Vec::new();
-    let mut platform = PlatformInstance::new();
-    platform.name = "Test Platform".to_string();
-    platform.location = "C:/Some/Test/Path".to_string();
+    let platform = PlatformInstance::new(
+        "Test Platform".to_string(),
+        "C:/Some/Test/Path".to_string()
+    );
     result.push(platform);
     return result;
 }
