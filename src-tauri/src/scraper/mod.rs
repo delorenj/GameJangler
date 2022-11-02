@@ -4,6 +4,7 @@ mod tests;
 use nanoid::nanoid;
 
 pub struct GameInstance {
+    id: String,
     title: String,
     location: String,
     owning_platform: PlatformInstance
@@ -20,16 +21,21 @@ impl PlatformInstance {
         Self { id: nanoid!(), name, location }
     }
 }
-struct ScrapeType;
+
+impl GameInstance {
+    pub fn new(title: String, location: String, owning_platform: String) -> Self {
+        Self { id: nanoid!(), title, location, owning_platform }
+    }
+}
 
 trait Scrapable<ScrapeType> {
-    fn start_scrape(&self, result: Vec<ScrapeType>, drive_letter: char);
+    fn start_scrape(&self, result: &Vec<ScrapeType>, drive_letter: char);
 }
 
 struct Steam;
 
 impl Scrapable<ScrapeType> for Steam {
-    fn start_scrape(&self, result: Vec<ScrapeType>, drive_letter: char) {
+    fn start_scrape(&self, result: &Vec<ScrapeType>, drive_letter: char) {
 
         println!("Scanning for Steam platforms on drive letter {}", drive_letter);
     }
@@ -37,7 +43,7 @@ impl Scrapable<ScrapeType> for Steam {
 
 struct Epic;
 impl Scrapable<ScrapeType> for Epic {
-    fn start_scrape(&self, result: Vec<ScrapeType>, drive_letter: char) {
+    fn start_scrape(&self, result: &Vec<ScrapeType>, drive_letter: char) {
         println!("Scanning for Epic platforms on drive letter {}", drive_letter);
     }
 }
@@ -50,8 +56,10 @@ impl<PlatformType: Scrapable<ScrapeType>> Scraper<PlatformType> {
     pub fn new(platform_type: PlatformType) -> Self {
         Self { platform_type }
     }
-    pub fn scrape(&self, result: Vec<ScrapeType>, drive_letter: char) {
+    pub fn scrape(&self, result: &Vec<ScrapeType>, drive_letter: char) {
         self.platform_type.start_scrape(result, drive_letter);
+        let st = ScrapeType::new
+        result.push()
     }
 }
 
