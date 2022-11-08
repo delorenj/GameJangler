@@ -28,37 +28,48 @@ impl GameInstance {
     }
 }
 
-trait Scrapable<ScrapeType> {
-    fn start_scrape(&self, result: &mut Vec<ScrapeType>, drive_letter: char);
+trait Scrapable<T> {
+    fn start_scrape(&self, result: &mut Vec<T>, drive_letter: char);
 }
 
 struct Steam;
 
-impl Scrapable<ScrapeType> for Steam {
-    fn start_scrape(&self, result: &mut Vec<ScrapeType>, drive_letter: char) {
-        result.push({})
+
+impl Scrapable<PlatformInstance> for Steam {
+    fn start_scrape(&self, result: &mut Vec<PlatformInstance>, drive_letter: char) {
         println!("Scanning for Steam platforms on drive letter {}", drive_letter);
     }
 }
 
 struct Epic;
-impl Scrapable<ScrapeType> for Epic {
-    fn start_scrape(&self, result: &mut Vec<ScrapeType>, drive_letter: char) {
+impl Scrapable<PlatformInstance> for Epic {
+    fn start_scrape(&self, result: &mut Vec<PlatformInstance>, drive_letter: char) {
         println!("Scanning for Epic platforms on drive letter {}", drive_letter);
     }
 }
 
-struct Scraper<PlatformType: Scrapable<ScrapeType>> {
-    platform_type: PlatformType
+trait Platform {
+
+}
+impl Platform for Steam {
+
 }
 
-impl<PlatformType: Scrapable<ScrapeType>> Scraper<PlatformType> {
-    pub fn new(platform_type: PlatformType) -> Self {
-        Self { platform_type }
-    }
-    pub fn scrape(&self, result: &mut Vec<ScrapeType>, drive_letter: char) {
+impl Platform for Epic {
+
+}
+
+struct PlatformScraper<T: Platform>;
+
+impl Scrapable<PlatformInstance> for PlatformScraper<Steam> {
+    fn scrape(&self, result: &mut Vec<PlatformInstance>, drive_letter: char) {
         self.platform_type.start_scrape(result, drive_letter);
     }
 }
 
+impl Scrapable<PlatformInstance> for PlatformScraper<Epic> {
+    fn scrape(&self, result: &mut Vec<PlatformInstance>, drive_letter: char) {
+        self.platform_type.start_scrape(result, drive_letter);
+    }
+}
 

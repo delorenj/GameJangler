@@ -1,4 +1,4 @@
-use crate::scraper::{PlatformInstance, Scraper, Steam};
+use crate::scraper::{PlatformInstance, PlatformScraper, Steam};
 
 #[test]
 fn test_platform_instance_constructor_has_unique_id_with_length_21() {
@@ -11,14 +11,14 @@ fn test_platform_instance_constructor_has_unique_id_with_length_21() {
 
 #[test]
 fn test_steam_scraper_can_scrape_for_platform() {
-    let scraper = Scraper::new(Steam);
+    let scraper = PlatformScraper::new(Steam);
     let mut result = Vec::new();
     scraper.scrape(&mut result, 'C')
 }
 
 #[test]
 fn test_steam_scraper_can_put_something_in_result_vec() {
-    let scraper = Scraper::new(Steam);
+    let scraper = PlatformScraper::new(Steam);
     let mut result = Vec::new();
     assert_eq!(0, result.len());
     scraper.scrape(&mut result, 'C');
