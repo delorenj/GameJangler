@@ -4,6 +4,7 @@ mod tests;
 use nanoid::nanoid;
 
 pub struct GameInstance {
+    id: String,
     title: String,
     location: String,
     owning_platform: PlatformInstance
@@ -20,7 +21,12 @@ impl PlatformInstance {
         Self { id: nanoid!(), name, location }
     }
 }
-struct ScrapeType;
+
+impl GameInstance {
+    pub fn new(title: String, location: String, owning_platform: String) -> Self {
+        Self { id: nanoid!(), title, location, owning_platform }
+    }
+}
 
 trait Scrapable<ScrapeType> {
     fn start_scrape(&self, result: &mut Vec<ScrapeType>, drive_letter: char);
