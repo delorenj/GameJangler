@@ -31,9 +31,8 @@ impl PlatformInstance {
     }
 }
 
-
-trait Scrapable<ScrapeType> {
-    fn start_scrape(&self, result: &mut Vec<ScrapeType>, drive_letter: char);
+pub trait Scrapable<ScrapeType> {
+    fn start_scrape(&self, result: &mut Vec<ScrapeType>, drive_letter: char) -> Result<(), ()>;
 }
 
 
