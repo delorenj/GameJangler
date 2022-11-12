@@ -4,6 +4,7 @@ pub mod epic;
 #[cfg(test)]
 mod tests;
 
+use std::fs::DirEntry;
 use nanoid::nanoid;
 
 pub struct GameInstance {
