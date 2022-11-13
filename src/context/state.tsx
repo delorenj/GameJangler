@@ -46,11 +46,6 @@ export function GlobalContextWrapper({ children }) {
     setGameData,
     serverState,
   }
-
-  useEffect(() => {
-    console.log("Setting/Getting server state...")
-  }, [serverState, setServerState])
-
   return <GlobalContext.Provider value={sharedState}>{children}</GlobalContext.Provider>
 }
 

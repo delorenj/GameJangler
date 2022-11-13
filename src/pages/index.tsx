@@ -1,8 +1,8 @@
 import { invoke } from "@tauri-apps/api/tauri"
-import type { NextPage } from "next"
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 import { AppCarousel } from "@/components/AppCarousel"
 import { Container } from "@/components/Container"
@@ -11,11 +11,24 @@ import { SaveCarousel } from "@/components/SaveCarousel"
 import { StorageCarousel } from "@/components/StorageCarousel"
 import { useGlobalContext } from "@/context/state"
 
-const Home: NextPage = () => {
-  const { currentPage, setCurrentPage } = useGlobalContext()
+enum ServerState {
+  init,
+  ready,
+  scraping,
+  loading,
+  syncing,
+}
 
+interface Props {
+  serverState: ServerState
+}
+
+const Home: NextPage<Props> = (props) => {
+  const { currentPage, setCurrentPage } = useGlobalContext()
+  const { serverState } = props
   useEffect(() => {
     setCurrentPage("Home")
+    console.log(`State received as: ${serverState}`)
   }, [setCurrentPage])
 
   return (
@@ -35,6 +48,14 @@ const Home: NextPage = () => {
       </div>
     </Container>
   )
+}
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  return {
+    props: {
+      serverState: ServerState.init,
+    },
+  }
 }
 
 export default Home
