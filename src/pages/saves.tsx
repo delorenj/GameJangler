@@ -1,19 +1,15 @@
-import { invoke } from "@tauri-apps/api/tauri"
 import type { NextPage } from "next"
-import Head from "next/head"
-import Image from "next/image"
-import { useEffect, useState } from "react";
+import { useEffect } from "react"
 
-import { Navbar } from "@/components/Navbar"
-import { useGlobalContext } from "@/context/state";
-import { Container } from "@/components/Container";
+import { Container } from "@/components/Container"
+import { useGlobalContext } from "@/context/state"
 
 const Home: NextPage = () => {
-  const {currentPage, setCurrentPage} = useGlobalContext();
+  const { setCurrentPage } = useGlobalContext()
 
   useEffect(() => {
-    setCurrentPage('Saves')
-  }, [setCurrentPage]);
+    setCurrentPage("Saves")
+  }, [setCurrentPage])
 
   return (
     <Container>

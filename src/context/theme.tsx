@@ -1,17 +1,21 @@
-import { createContext, useContext } from "react";
+import React, { createContext, useContext } from "react"
 
-const ThemeContext = createContext({});
+const ThemeContext = createContext({})
 
-export function ThemeContextWrapper({ children }) {
+interface ThemeContextProps {
+  children?: React.ReactNode
+}
+
+export const ThemeContextWrapper = ({ children }: ThemeContextProps) => {
   return (
     <ThemeContext.Provider value={{}}>
-      <div className="dark:text-white dark:bg-slate-800 bg-white text-black">
+      <div className="bg-white text-black dark:bg-slate-800 dark:text-white">
         {children}
       </div>
     </ThemeContext.Provider>
-  );
+  )
 }
 
-export function useThemeContext() {
-  return useContext(ThemeContext);
+export const useThemeContext = () => {
+  return useContext(ThemeContext)
 }

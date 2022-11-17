@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, ReactNode, useContext, useState } from "react"
 
 const GlobalContext = createContext({})
 
@@ -28,27 +28,37 @@ export const linkIndexMap = {
   Settings: 3,
 }
 
-export function GlobalContextWrapper({ children }) {
-  const [currentPage, setCurrentPage] = useState()
-  const [appData, setAppData] = useState()
-  const [platformData, setPlatformData] = useState()
-  const [gameData, setGameData] = useState()
-  const [serverState, setServerState] = useState()
+export enum ServerState {
+  init,
+  ready,
+  scraping,
+  loading,
+  syncing,
+}
+
+interface GlobalContextProps {
+  children?: ReactNode
+}
+
+export const GlobalContextWrapper = ({ children }: GlobalContextProps) => {
+  const [currentPage, setCurrentPage] = useState<PageName>()
+  const [serverState] = useState<ServerState>()
 
   const sharedState = {
     currentPage,
     setCurrentPage,
-    appData,
-    setAppData,
-    platformData,
-    setPlatformData,
-    gameData,
-    setGameData,
     serverState,
   }
   return <GlobalContext.Provider value={sharedState}>{children}</GlobalContext.Provider>
 }
 
-export function useGlobalContext() {
-  return useContext(GlobalContext)
+export type PageName = "Home" | "Apps" | "Saves" | "Settings"
+export type GlobalContextType = {
+  currentPage: PageName
+  setCurrentPage: (currentPage: PageName) => void
+  serverState: ServerState
+}
+
+export const useGlobalContext = () => {
+  return useContext(GlobalContext) as GlobalContextType
 }
