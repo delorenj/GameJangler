@@ -1,10 +1,10 @@
 {
-  "name": "tauri-nextjs-template",
+  "name": "game-jangler",
   "version": "0.1.0",
   "private": true,
   "author": {
-    "name": "Your Name Here",
-    "email": "your-email-here@example.com"
+    "name": "Jarad DeLorenzo",
+    "email": "jaradd@gmail.com"
   },
   "scripts": {
     "next-start": "cross-env BROWSER=none next dev",
@@ -19,11 +19,12 @@
   "dependencies": {
     "@headlessui/react": "^1.7.3",
     "@headlessui/tailwindcss": "^0.1.1",
-    "@tauri-apps/api": "^1.0.2",
+    "@tauri-apps/api": "^1.2.0",
     "clsx": "^1.2.1",
     "next": "^12.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "tauri-settings": "^0.3.0",
     "yarn": "^1.22.19"
   },
   "devDependencies": {

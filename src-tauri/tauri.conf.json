@@ -7,7 +7,7 @@
     "distDir": "../out"
   },
   "package": {
-    "productName": "tauri-nextjs-template",
+    "productName": "game-jangler",
     "version": "0.1.0"
   },
   "tauri": {
