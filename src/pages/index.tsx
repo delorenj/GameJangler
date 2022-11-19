@@ -9,6 +9,7 @@ import { Navbar } from "@/components/Navbar"
 import { SaveCarousel } from "@/components/SaveCarousel"
 import { StorageCarousel } from "@/components/StorageCarousel"
 import { ServerState, useGlobalContext } from "@/context/state"
+import { invoke } from "@tauri-apps/api/tauri";
 
 interface HomeProps {
   serverState: ServerState
@@ -19,7 +20,12 @@ const Home: NextPage<HomeProps> = (props) => {
   const { serverState } = props
   useEffect(() => {
     setCurrentPage("Home")
-    console.log(`State received as: ${serverState}`)
+    const fetch = async () => {
+      return await invoke("load_settings")
+    }
+    const result = fetch().catch(console.error)
+    debugger
+    console.log(`State received as`)
   }, [setCurrentPage, serverState])
 
   return (

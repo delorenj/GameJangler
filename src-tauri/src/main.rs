@@ -3,8 +3,11 @@
     windows_subsystem = "windows"
 )]
 
-use std::time::{SystemTime, UNIX_EPOCH};
 use app::scraper::PlatformInstance;
+use app::settings::{LoadSettingsError, SettingsManager, SettingsSchema};
+use log::error;
+use simplelog::info;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 #[tauri::command]
 fn on_button_clicked() -> String {
@@ -22,17 +25,30 @@ fn on_button_clicked() -> String {
 #[tauri::command]
 fn scan_for_platform(platform_name: String) -> Vec<PlatformInstance> {
     let mut result: Vec<PlatformInstance> = Vec::new();
-    let platform = PlatformInstance::new(
-        "Test Platform".to_string(),
-        "C:/Some/Test/Path".to_string()
-    );
+    let platform =
+        PlatformInstance::new("Test Platform".to_string(), "C:/Some/Test/Path".to_string());
     result.push(platform);
     return result;
 }
 
+#[tauri::command]
+fn load_settings() -> Option<SettingsSchema> {
+    let result = SettingsManager::load();
+    match result {
+        Ok(s) => {
+            info!("Load Settings: OK !");
+            Some(s)
+        }
+        Err(e) => {
+            error!("Load settings: None !");
+            None
+        }
+    }
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![on_button_clicked])
+        .invoke_handler(tauri::generate_handler![on_button_clicked, load_settings])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
