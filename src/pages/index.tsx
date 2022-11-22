@@ -11,22 +11,16 @@ import { StorageCarousel } from "@/components/StorageCarousel"
 import { ServerState, useGlobalContext } from "@/context/state"
 import { invoke } from "@tauri-apps/api/tauri";
 
-interface HomeProps {
-  serverState: ServerState
-}
 
-const Home: NextPage<HomeProps> = (props) => {
+const Home: NextPage = () => {
   const { setCurrentPage } = useGlobalContext()
-  const { serverState } = props
   useEffect(() => {
     setCurrentPage("Home")
     const fetch = async () => {
-      return await invoke("load_settings")
+      return await invoke<string>("load_settings")
     }
     const result = fetch().catch(console.error)
-    debugger
-    console.log(`State received as`)
-  }, [setCurrentPage, serverState])
+  }, [setCurrentPage])
 
   return (
     <Container>
@@ -45,14 +39,6 @@ const Home: NextPage<HomeProps> = (props) => {
       </div>
     </Container>
   )
-}
-
-export const getStaticProps: GetStaticProps<HomeProps> = async () => {
-  return {
-    props: {
-      serverState: ServerState.init,
-    },
-  }
 }
 
 export default Home
