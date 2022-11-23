@@ -32,8 +32,9 @@ fn scan_for_platform(platform_name: String) -> Vec<PlatformInstance> {
 }
 
 #[tauri::command]
-fn load_settings() -> Option<SettingsSchema> {
-    let result = SettingsManager::load();
+fn load_settings(app_handle: tauri::AppHandle) -> Option<SettingsSchema> {
+    let app_dir = app_handle.path_resolver().app_dir();
+    let result = SettingsManager::load(app_dir);
     match result {
         Ok(s) => {
             info!("Load Settings: OK !");
