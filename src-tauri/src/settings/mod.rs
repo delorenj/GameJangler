@@ -3,11 +3,9 @@ mod tests;
 
 use crate::scraper::PlatformInstance;
 use crate::settings::LoadSettingsError::NONE;
-use nanoid::nanoid;
 use serde::{Deserialize, Serialize};
 use simplelog::info;
-use std::path::Path;
-use std::{fs::DirEntry, path::PathBuf};
+use std::path::{Path, PathBuf};
 use std::fs;
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -48,12 +46,15 @@ impl Loadable for SettingsManager {
             match result {
                 Ok(s) => {
                     info!("Loaded settings!");
+                    let settings: Result<SettingsSchema, _> = serde_json::from_str(&s); 
+                    match settings {
+                        Ok(s) => s,
+                        Err(_) => SettingsSchema { platforms: None },   // default settings
+                    };
+
                 }
-                Err(e) => {
-                    error!("Nope")
-                }
-            }
-        Err(NONE)
+                Err(_) => SettingsSchema { platforms: None }    // default settings
+            };
     }
 }    
 
