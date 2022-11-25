@@ -35,17 +35,10 @@ fn scan_for_platform(platform_name: String) -> Vec<PlatformInstance> {
 fn load_settings(app_handle: tauri::AppHandle) -> Option<SettingsSchema> {
     let app_dir = app_handle.path_resolver().app_dir();
     let manager = SettingsManager::new(app_dir);
-    let result: Result<SettingsSchema, LoadSettingsError> = manager.load();
-    
-    match result {
-        Ok(s) => {
-            info!("Load Settings: OK !");
-            Some(s)
-        }
-        Err(e) => {
-            simplelog::error!("Load settings: None !");
-            None
-        }
+    let settings = manager.load();
+    match settings {
+        Some(x  ) => return Some(x),
+        None => return settings
     }
 }
 

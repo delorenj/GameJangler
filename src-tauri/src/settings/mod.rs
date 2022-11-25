@@ -36,11 +36,11 @@ impl SettingsManager {
 }
 
 pub trait Loadable {
-    fn load(&self) -> Result<SettingsSchema, LoadSettingsError>;
+    fn load(&self) -> Option<SettingsSchema>;
 }
 
 impl Loadable for SettingsManager {
-    fn load(&self) -> Result<SettingsSchema, LoadSettingsError> {
+    fn load(&self) -> Option<SettingsSchema> {
         let result = fs::read_to_string(self.settings_path.join(Path::new(SETTINGS_FILE)));
         
             match result {
@@ -48,12 +48,12 @@ impl Loadable for SettingsManager {
                     info!("Loaded settings!");
                     let settings: Result<SettingsSchema, _> = serde_json::from_str(&s); 
                     match settings {
-                        Ok(s) => s,
-                        Err(_) => SettingsSchema { platforms: None },   // default settings
+                        Ok(s) => return Some(s),
+                        Err(_) => return None
                     };
 
                 }
-                Err(_) => SettingsSchema { platforms: None }    // default settings
+                Err(_) =>  return None
             };
     }
 }    
