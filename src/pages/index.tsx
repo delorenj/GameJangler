@@ -18,11 +18,14 @@ const Home: NextPage = () => {
   
   useEffect(() => {
     setCurrentPage("Home")
-    const fetch = async () => {
+    const fetchSettings = async () => {
       return await invoke<string>("load_settings")
     }
-    const result = fetch().catch(console.error)
-    setSettings(result);
+    fetchSettings()
+    .then(x => {
+      setSettings(x);
+    })
+    .catch(console.error)
   }, [setCurrentPage])
 
   return (
