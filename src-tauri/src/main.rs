@@ -4,7 +4,7 @@
 )]
 
 use app::scraper::PlatformInstance;
-use app::settings::{Loadable, LoadSettingsError, SettingsManager, SettingsSchema};
+use app::settings::{Loadable, SettingsManager, SettingsSchema};
 use log::error;
 use simplelog::info;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -32,14 +32,10 @@ fn scan_for_platform(platform_name: String) -> Vec<PlatformInstance> {
 }
 
 #[tauri::command]
-fn load_settings(app_handle: tauri::AppHandle) -> Option<SettingsSchema> {
+fn load_settings(app_handle: tauri::AppHandle) -> SettingsSchema {
     let app_dir = app_handle.path_resolver().app_dir();
     let manager = SettingsManager::new(app_dir);
-    let settings = manager.load();
-    match settings {
-        Some(x  ) => return Some(x),
-        None => return settings
-    }
+    manager.load()
 }
 
 fn main() {

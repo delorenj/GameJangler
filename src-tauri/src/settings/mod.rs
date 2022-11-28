@@ -2,21 +2,14 @@
 mod tests;
 
 use crate::scraper::PlatformInstance;
-use crate::settings::LoadSettingsError::NONE;
 use serde::{Deserialize, Serialize};
 use simplelog::info;
 use std::path::{Path, PathBuf};
 use std::fs;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Default, Serialize, Deserialize, Debug)]
 pub struct SettingsSchema {
     pub platforms: Option<Vec<PlatformInstance>>,
-}
-
-pub enum LoadSettingsError {
-    NONE,
-    EMPTY,
-    CORRUPT,
 }
 
 pub const SETTINGS_FILE: &str = "settings.json";
@@ -36,11 +29,12 @@ impl SettingsManager {
 }
 
 pub trait Loadable {
-    fn load(&self) -> Option<SettingsSchema>;
+    fn load(&self) -> SettingsSchema;
+    fn init(&self) -> SettingsSchema;
 }
 
 impl Loadable for SettingsManager {
-    fn load(&self) -> Option<SettingsSchema> {
+    fn load(&self) -> SettingsSchema {
         let result = fs::read_to_string(self.settings_path.join(Path::new(SETTINGS_FILE)));
         
             match result {
@@ -48,21 +42,22 @@ impl Loadable for SettingsManager {
                     info!("Loaded settings!");
                     let settings: Result<SettingsSchema, _> = serde_json::from_str(&s); 
                     match settings {
-                        Ok(s) => return Some(s),
-                        Err(_) => return None
+                        Ok(s) => return s,
+                        Err(_) => return self.init()
                     };
 
                 }
-                Err(_) =>  return None
+                Err(_) =>  return self.init()
             };
     }
-}    
+    
+    fn init(&self) -> SettingsSchema {
+        let data = SettingsSchema::default();
+        fs::write(
+            self.settings_path.join(Path::new(SETTINGS_FILE)), 
+            serde_json::to_string_pretty(&data).unwrap().to_owned())
+        .expect("Unable to write file");
+        self.load()
 
-    // pub fn init() -> Result<SettingsSchema, LoadSettingsError> {
-    //     let data = "balls";
-    //     fs::write(app_dir
-    //         .unwrap()
-    //         .join(Path::new(SETTINGS_FILE)), data).expect("Unable to write file");
-
-    //     Err(NONE)
-    // }
+    }
+}
