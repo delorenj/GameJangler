@@ -8,6 +8,7 @@ use app::settings::{Loadable, SettingsManager, SettingsSchema};
 use log::error;
 use simplelog::info;
 use std::time::{SystemTime, UNIX_EPOCH};
+use tauri::Wry;
 
 #[tauri::command]
 fn on_button_clicked() -> String {
@@ -32,7 +33,7 @@ fn scan_for_platform(platform_name: String) -> Vec<PlatformInstance> {
 }
 
 #[tauri::command]
-fn load_settings(app_handle: tauri::AppHandle) -> SettingsSchema {
+fn load_settings(app_handle: tauri::AppHandle<Wry>) -> SettingsSchema {
     let app_dir = app_handle.path_resolver().app_dir();
     let manager = SettingsManager::new(app_dir);
     manager.load()
