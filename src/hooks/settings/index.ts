@@ -13,14 +13,13 @@ interface SettingsSchema {
 
 export const useSettings = () => {
   const [settings, setSettings] = useState<SettingsSchema>()
-  console.log("useSettings init")
   useEffect(() => {
     const fetchSettings = async () => {
-      return await invoke<string>("load_settings")
+      return await invoke<SettingsSchema>("load_settings")
     }
 
     fetchSettings()
-      .then((settings: string | SettingsSchema) => {
+      .then((settings) => {
         setSettings(settings)
       })
       .catch(console.error)
