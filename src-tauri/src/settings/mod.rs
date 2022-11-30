@@ -53,10 +53,14 @@ impl Loadable for SettingsManager {
     
     fn init(&self) -> SettingsSchema {
         let data = SettingsSchema::default();
+        println!("FUCLCLCLCLCLCK: {}", self.settings_path.join(Path::new(SETTINGS_FILE)).into_os_string().into_string().unwrap());
+        if !self.settings_path.exists() {
+            fs::create_dir(&self.settings_path).expect("Error creating config directory!");
+        }
         fs::write(
             self.settings_path.join(Path::new(SETTINGS_FILE)), 
             serde_json::to_string_pretty(&data).unwrap().to_owned())
-        .expect("Unable to write file");
+        .expect("Unable to write file: ");
         self.load()
 
     }

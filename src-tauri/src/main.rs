@@ -6,7 +6,7 @@
 use app::scraper::PlatformInstance;
 use app::settings::{Loadable, SettingsManager, SettingsSchema};
 use log::error;
-use simplelog::info;
+    use simplelog::info;
 use std::time::{SystemTime, UNIX_EPOCH};
 use tauri::Wry;
 
