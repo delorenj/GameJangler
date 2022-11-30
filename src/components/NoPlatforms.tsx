@@ -1,4 +1,9 @@
+import { invoke } from "@tauri-apps/api/tauri"
+
 export const NoPlatforms: React.FC = () => {
+  const scanForPlatforms = async () => {
+    await invoke("scan_for_platforms", "C")
+  }
   return (
     <div className="container mx-auto px-6 py-16 pt-28 text-center">
       <div className="mx-auto max-w-lg">
@@ -7,16 +12,18 @@ export const NoPlatforms: React.FC = () => {
         </h1>
 
         <p className="mt-6 text-gray-500 dark:text-gray-300">
-          We can do a quick scan for you to find all locally installed platforms. Or, if you know where they are, you can just add them manually.
+          We can do a quick scan for you to find all locally installed platforms. Or, if
+          you know where they are, you can just add them manually.
         </p>
 
         <div className="mx-auto mt-6 w-full max-w-sm focus-within:border-blue-400 focus-within:ring focus-within:ring-blue-300 focus-within:ring-opacity-40 dark:border-gray-700 dark:focus-within:border-blue-300">
-            <button
-              type="button"
-              className="m-1 h-10 transform rounded-md bg-blue-500 px-4 py-2 text-white transition-colors duration-300 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none"
-            >
-              Scan for platforms
-            </button>
+          <button
+            type="button"
+            className="m-1 h-10 transform rounded-md bg-blue-500 px-4 py-2 text-white transition-colors duration-300 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none"
+            onClick={scanForPlatforms}
+          >
+            Scan for platforms
+          </button>
         </div>
       </div>
 
