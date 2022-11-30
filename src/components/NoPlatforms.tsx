@@ -1,9 +1,22 @@
 import { invoke } from "@tauri-apps/api/tauri"
-
+import { PlatformInstance } from "@/hooks/settings"
+import { useEffect } from "react"
 export const NoPlatforms: React.FC = () => {
-  const scanForPlatforms = async () => {
-    await invoke("scan_for_platforms", "C")
-  }
+
+
+  useEffect(() => {
+    const scanForPlatforms = async () => {
+      return await invoke<PlatformInstance[]>("scan_for_platforms", {"platformName": "steam"})
+    }
+    console.log("doing it !")
+
+    scanForPlatforms()
+    .then(result => {
+      console.log(result)
+    })
+    .catch("fuck")
+  }, [])
+
   return (
     <div className="container mx-auto px-6 py-16 pt-28 text-center">
       <div className="mx-auto max-w-lg">
@@ -20,7 +33,6 @@ export const NoPlatforms: React.FC = () => {
           <button
             type="button"
             className="m-1 h-10 transform rounded-md bg-blue-500 px-4 py-2 text-white transition-colors duration-300 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none"
-            onClick={scanForPlatforms}
           >
             Scan for platforms
           </button>

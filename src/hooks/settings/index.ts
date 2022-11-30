@@ -1,13 +1,13 @@
 import { invoke } from "@tauri-apps/api/tauri"
 import { useEffect, useState } from "react"
 
-interface PlatformInstance {
+export interface PlatformInstance {
   id: string
   name: string
   location: string
 }
 
-interface SettingsSchema {
+export interface SettingsSchema {
   platforms: PlatformInstance[]
 }
 
