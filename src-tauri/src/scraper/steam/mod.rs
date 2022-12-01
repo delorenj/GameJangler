@@ -31,8 +31,8 @@ fn is_libraryfolders_file(e: &DirEntry) -> bool {
 }
 
 impl Scrapable<PlatformInstance> for Steam {
-    fn start_scrape(&self, result: &mut Vec<PlatformInstance>, drive_letter: char) {
-        println!("Scanning for Steam platforms on drive letter {}", drive_letter);
+    fn start_scrape(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>) {
+        println!("Scanning for Steam platforms on root paths {:?}", root_paths);
         let finders = Finder::new("C:\\");
         for i in finders.filter(&is_libraryfolders_file).into_iter() {
             println!("{}", i.path().to_str().unwrap());
@@ -41,7 +41,7 @@ impl Scrapable<PlatformInstance> for Steam {
 }
 
 impl Scrapable<GameInstance> for Steam {
-    fn start_scrape(&self, result: &mut Vec<GameInstance>, drive_letter: char) {
-        println!("Scanning for Steam games on drive letter {}", drive_letter);
+    fn start_scrape(&self, result: &mut Vec<GameInstance>, root_paths: &Vec<&str>) {
+        println!("Scanning for Steam games on root paths {:?}", root_paths);
     }
 }

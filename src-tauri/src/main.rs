@@ -3,10 +3,11 @@
     windows_subsystem = "windows"
 )]
 
-use app::scraper::PlatformInstance;
+use app::scraper::{PlatformInstance, ScrapeManager, Scrapable};
 use app::settings::{Loadable, SettingsManager, SettingsSchema};
 use log::error;
     use simplelog::info;
+use std::result;
 use std::time::{SystemTime, UNIX_EPOCH};
 use tauri::Wry;
 
@@ -33,11 +34,14 @@ fn scan_for_platform(platform: String) -> Vec<PlatformInstance> {
 }
 
 #[tauri::command]
-fn scan_for_platforms(platforms: Vec<&str>) -> Vec<PlatformInstance> {
+fn scan_for_platforms(platforms: Vec<&str>, root_paths: Vec<&str>) -> Vec<PlatformInstance> {
     let mut result: Vec<PlatformInstance> = Vec::new();
-    let platform =
-        PlatformInstance::new("Test Platform".to_string(), "C:/Some/Test/Path".to_string());
-    result.push(platform);
+    // let platform =
+    //     PlatformInstance::new("steam".to_string(), "C:/Some/Test/Path".to_string());
+    // result.push(platform);
+    // return result;
+    let scanner = ScrapeManager {};
+    scanner.start_scrape(&mut result, &vec!["C:/"]);
     return result;
 }
 

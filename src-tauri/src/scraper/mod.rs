@@ -23,6 +23,11 @@ impl GameInstance {
     }
 }
 
+pub enum Platform {
+    STEAM,
+    EPIC,
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PlatformInstance {
     id: String, //UUID
@@ -41,5 +46,13 @@ impl PlatformInstance {
 }
 
 pub trait Scrapable<ScrapeType> {
-    fn start_scrape(&self, result: &mut Vec<ScrapeType>, drive_letter: char);
+    fn start_scrape(&self, result: &mut Vec<ScrapeType>, root_paths: &Vec<&str>);
+}
+
+pub struct ScrapeManager {}
+
+impl Scrapable<PlatformInstance> for ScrapeManager {
+    fn start_scrape(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>) {
+        todo!()
+    }
 }

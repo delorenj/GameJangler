@@ -5,15 +5,15 @@ mod tests;
 pub struct Epic;
 
 impl Scrapable<PlatformInstance> for Epic {
-    fn start_scrape(&self, result: &mut Vec<PlatformInstance>, drive_letter: char) {
-        println!("Scanning for Epic platforms on drive letter {}", drive_letter);
+    fn start_scrape(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>) {
+        println!("Scanning for Epic platforms on root paths {:?}", root_paths);
         let test = PlatformInstance::new("Test".to_owned(), "C:/some/location".to_owned());
         result.push(test);
     }
 }
 
 impl Scrapable<GameInstance> for Epic {
-    fn start_scrape(&self, result: &mut Vec<GameInstance>, drive_letter: char) {
-        println!("Scanning for Epic games on drive letter {}", drive_letter);
+    fn start_scrape(&self, result: &mut Vec<GameInstance>, root_paths: &Vec<&str>) {
+        println!("Scanning for Epic games on root paths {:?}", root_paths);
     }
 }
