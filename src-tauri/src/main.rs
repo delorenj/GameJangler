@@ -24,7 +24,16 @@ fn on_button_clicked() -> String {
 }
 
 #[tauri::command]
-fn scan_for_platforms(platform_name: String) -> Vec<PlatformInstance> {
+fn scan_for_platform(platform: String) -> Vec<PlatformInstance> {
+    let mut result: Vec<PlatformInstance> = Vec::new();
+    let platform =
+        PlatformInstance::new("Test Platform".to_string(), "C:/Some/Test/Path".to_string());
+    result.push(platform);
+    return result;
+}
+
+#[tauri::command]
+fn scan_for_platforms(platforms: Vec<&str>) -> Vec<PlatformInstance> {
     let mut result: Vec<PlatformInstance> = Vec::new();
     let platform =
         PlatformInstance::new("Test Platform".to_string(), "C:/Some/Test/Path".to_string());
@@ -41,7 +50,7 @@ fn load_settings(app_handle: tauri::AppHandle<Wry>) -> SettingsSchema {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![on_button_clicked, load_settings, scan_for_platforms])
+        .invoke_handler(tauri::generate_handler![on_button_clicked, load_settings, scan_for_platform, scan_for_platforms])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
