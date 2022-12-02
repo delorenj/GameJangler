@@ -3,26 +3,14 @@
     windows_subsystem = "windows"
 )]
 
-use app::scanner::{PlatformInstance, ScanManager, Scannable};
+use std::borrow::Borrow;
+use app::scanner::{Platform, PlatformInstance, ScanManager, MetaScannable, PlatformSet};
 use app::settings::{Loadable, SettingsManager, SettingsSchema};
 use log::error;
     use simplelog::info;
 use std::result;
 use std::time::{SystemTime, UNIX_EPOCH};
 use tauri::Wry;
-
-#[tauri::command]
-fn on_button_clicked() -> String {
-    let start = SystemTime::now();
-    let since_the_epoch = start
-        .duration_since(UNIX_EPOCH)
-        .expect("Time went backwards")
-        .as_millis();
-    format!(
-        "on_button_clicked called from Rust! (timestamp: {}ms)",
-        since_the_epoch
-    )
-}
 
 #[tauri::command]
 fn scan_for_platform(platform: String) -> Vec<PlatformInstance> {
@@ -34,14 +22,12 @@ fn scan_for_platform(platform: String) -> Vec<PlatformInstance> {
 }
 
 #[tauri::command]
-fn scan_for_platforms(platforms: Vec<&str>, root_paths: Vec<&str>) -> Vec<PlatformInstance> {
+fn scan_for_platforms(root_paths: Vec<&str>, platform_set: Option<PlatformSet>) -> Vec<PlatformInstance> {
+    println!("{:?}", platform_set.borrow());
+
     let mut result: Vec<PlatformInstance> = Vec::new();
-    // let platform =
-    //     PlatformInstance::new("steam".to_string(), "C:/Some/Test/Path".to_string());
-    // result.push(platform);
-    // return result;
     let scanner = ScanManager {};
-    scanner.start_scan(&mut result, &vec!["C:/"]);
+    scanner.start_scan(&mut result, &root_paths, platform_set);
     return result;
 }
 
@@ -54,7 +40,7 @@ fn load_settings(app_handle: tauri::AppHandle<Wry>) -> SettingsSchema {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![on_button_clicked, load_settings, scan_for_platform, scan_for_platforms])
+        .invoke_handler(tauri::generate_handler![load_settings, scan_for_platform, scan_for_platforms])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -1,11 +1,10 @@
-import { ScanRequest, useScanner } from "@/hooks/scanner"
-import { Platform } from "@/hooks/settings"
+import {ScanRequest, useScanner} from "@/hooks/scanner"
+import {Platform} from "@/hooks/settings";
 
 export const NoPlatforms: React.FC = () => {
   const { scanForPlatforms, response } = useScanner()
   const startScan = async () => {
     const scanRequest: ScanRequest = {
-      platforms: [Platform.STEAM],
       rootPaths: ["C:/"],
     }
     await scanForPlatforms(scanRequest).then(() => {

@@ -2,8 +2,8 @@ import { invoke } from "@tauri-apps/api/tauri"
 import { useEffect, useState } from "react"
 
 export enum Platform {
-  STEAM = "steam",
-  EPIC = "epic",
+  STEAM = "STEAM",
+  EPIC = "EPIC",
 }
 
 export interface PlatformInstance {

@@ -4,7 +4,9 @@ import { useEffect, useState } from "react"
 import { Platform, PlatformInstance } from "@/hooks/settings"
 
 export interface ScanRequest {
-  platforms: Platform[]
+  platformSet?: {
+    platforms: Platform[] | null
+  }
   rootPaths: string[]
 }
 export const useScanner = () => {
@@ -13,8 +15,8 @@ export const useScanner = () => {
 
   const scanForPlatforms = async (scanRequest: ScanRequest) => {
     setScanningInProgress(true)
-    invoke<PlatformInstance[]>("scan_for_platforms", {
-      platforms: scanRequest.platforms,
+    await invoke<PlatformInstance[]>("scan_for_platforms", {
+      platformSet: scanRequest.platformSet,
       rootPaths: scanRequest.rootPaths,
     })
       .then((response) => {

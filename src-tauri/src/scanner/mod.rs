@@ -1,12 +1,16 @@
 pub mod epic;
 pub mod steam;
 
+use std::borrow::Borrow;
+use strum::{IntoEnumIterator, EnumIter};
+
 #[cfg(test)]
 mod tests;
 use nanoid::nanoid;
 use serde::{Deserialize, Serialize};
 use std::fs::DirEntry;
 
+#[derive(Serialize, Deserialize, Debug)]
 pub struct GameInstance {
     id: String,
     title: String,
@@ -23,11 +27,24 @@ impl GameInstance {
     }
 }
 
+#[derive(Debug, EnumIter, Serialize, Deserialize)]
 pub enum Platform {
     STEAM,
     EPIC,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PlatformSet {
+    platforms: Vec<Platform>
+}
+
+impl Default for PlatformSet {
+    fn default() -> PlatformSet {
+        PlatformSet {
+         platforms: Platform::iter().collect::<Vec<Platform>>()
+        }
+    }
+}
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PlatformInstance {
     id: String, //UUID
@@ -49,10 +66,16 @@ pub trait Scannable<ScanType> {
     fn start_scan(&self, result: &mut Vec<ScanType>, root_paths: &Vec<&str>);
 }
 
+pub trait MetaScannable<ScanType> {
+    fn start_scan(&self, result: &mut Vec<ScanType>, root_paths: &Vec<&str>, platform_set: Option<PlatformSet>);
+}
+
 pub struct ScanManager {}
 
-impl Scannable<PlatformInstance> for ScanManager {
-    fn start_scan(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>) {
-        todo!()
+impl MetaScannable<PlatformInstance> for ScanManager {
+    fn start_scan(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>, platform_set: Option<PlatformSet>) {
+        let platforms = platform_set.unwrap_or_default();
+
+        println!("{:?}", platforms);
     }
 }
