@@ -1,5 +1,5 @@
 use std::fs::DirEntry;
-use crate::scraper::{GameInstance, PlatformInstance, Scrapable};
+use crate::scanner::{GameInstance, PlatformInstance, Scannable};
 
 extern crate finder;
 
@@ -30,8 +30,8 @@ fn is_libraryfolders_file(e: &DirEntry) -> bool {
     false
 }
 
-impl Scrapable<PlatformInstance> for Steam {
-    fn start_scrape(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>) {
+impl Scannable<PlatformInstance> for Steam {
+    fn start_scan(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>) {
         println!("Scanning for Steam platforms on root paths {:?}", root_paths);
         let finders = Finder::new("C:\\");
         for i in finders.filter(&is_libraryfolders_file).into_iter() {
@@ -40,8 +40,8 @@ impl Scrapable<PlatformInstance> for Steam {
     }
 }
 
-impl Scrapable<GameInstance> for Steam {
-    fn start_scrape(&self, result: &mut Vec<GameInstance>, root_paths: &Vec<&str>) {
+impl Scannable<GameInstance> for Steam {
+    fn start_scan(&self, result: &mut Vec<GameInstance>, root_paths: &Vec<&str>) {
         println!("Scanning for Steam games on root paths {:?}", root_paths);
     }
 }

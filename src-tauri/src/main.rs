@@ -3,7 +3,7 @@
     windows_subsystem = "windows"
 )]
 
-use app::scraper::{PlatformInstance, ScrapeManager, Scrapable};
+use app::scanner::{PlatformInstance, ScanManager, Scannable};
 use app::settings::{Loadable, SettingsManager, SettingsSchema};
 use log::error;
     use simplelog::info;
@@ -40,8 +40,8 @@ fn scan_for_platforms(platforms: Vec<&str>, root_paths: Vec<&str>) -> Vec<Platfo
     //     PlatformInstance::new("steam".to_string(), "C:/Some/Test/Path".to_string());
     // result.push(platform);
     // return result;
-    let scanner = ScrapeManager {};
-    scanner.start_scrape(&mut result, &vec!["C:/"]);
+    let scanner = ScanManager {};
+    scanner.start_scan(&mut result, &vec!["C:/"]);
     return result;
 }
 

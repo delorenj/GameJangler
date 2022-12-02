@@ -45,14 +45,14 @@ impl PlatformInstance {
     }
 }
 
-pub trait Scrapable<ScrapeType> {
-    fn start_scrape(&self, result: &mut Vec<ScrapeType>, root_paths: &Vec<&str>);
+pub trait Scannable<ScanType> {
+    fn start_scan(&self, result: &mut Vec<ScanType>, root_paths: &Vec<&str>);
 }
 
-pub struct ScrapeManager {}
+pub struct ScanManager {}
 
-impl Scrapable<PlatformInstance> for ScrapeManager {
-    fn start_scrape(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>) {
+impl Scannable<PlatformInstance> for ScanManager {
+    fn start_scan(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>) {
         todo!()
     }
 }

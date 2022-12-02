@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use crate::scraper::PlatformInstance;
+use crate::scanner::PlatformInstance;
 use serde::{Deserialize, Serialize};
 use simplelog::info;
 use std::path::{Path, PathBuf};
