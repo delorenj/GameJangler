@@ -23,8 +23,6 @@ fn scan_for_platform(platform: String) -> Vec<PlatformInstance> {
 
 #[tauri::command]
 fn scan_for_platforms(root_paths: Vec<&str>, platform_set: Option<PlatformSet>) -> Vec<PlatformInstance> {
-    println!("{:?}", platform_set.borrow());
-
     let mut result: Vec<PlatformInstance> = Vec::new();
     let scanner = ScanManager {};
     scanner.start_scan(&mut result, &root_paths, platform_set);

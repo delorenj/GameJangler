@@ -5,6 +5,9 @@ export const NoPlatforms: React.FC = () => {
   const { scanForPlatforms, response } = useScanner()
   const startScan = async () => {
     const scanRequest: ScanRequest = {
+      platformSet: {
+         platforms: [Platform.STEAM]
+      },
       rootPaths: ["C:/"],
     }
     await scanForPlatforms(scanRequest).then(() => {

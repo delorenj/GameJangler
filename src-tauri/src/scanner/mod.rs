@@ -10,6 +10,8 @@ use nanoid::nanoid;
 use serde::{Deserialize, Serialize};
 use std::fs::DirEntry;
 
+use self::{steam::Steam, epic::Epic};
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct GameInstance {
     id: String,
@@ -45,6 +47,7 @@ impl Default for PlatformSet {
         }
     }
 }
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PlatformInstance {
     id: String, //UUID
@@ -75,7 +78,15 @@ pub struct ScanManager {}
 impl MetaScannable<PlatformInstance> for ScanManager {
     fn start_scan(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>, platform_set: Option<PlatformSet>) {
         let platforms = platform_set.unwrap_or_default();
-
-        println!("{:?}", platforms);
+        for platform in platforms.platforms.iter() {
+            match platform {
+              Platform::STEAM => {
+                Steam.start_scan(result, root_paths)
+              } 
+              Platform::EPIC => {
+                Epic.start_scan(result, root_paths)
+              }
+            }
+        }
     }
 }
