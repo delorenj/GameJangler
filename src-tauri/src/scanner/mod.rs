@@ -1,15 +1,14 @@
 pub mod epic;
 pub mod steam;
 
-use std::borrow::Borrow;
 use strum::{IntoEnumIterator, EnumIter};
 
 #[cfg(test)]
 mod tests;
 use nanoid::nanoid;
 use serde::{Deserialize, Serialize};
-use std::fs::DirEntry;
 use std::path::PathBuf;
+use tauri::Wry;
 
 use self::{steam::Steam, epic::Epic};
 
@@ -67,25 +66,25 @@ impl PlatformInstance {
 }
 
 pub trait Scannable<ScanType> {
-    fn start_scan(&self, result: &mut Vec<ScanType>, root_paths: &Vec<&str>);
+    fn start_scan(&self, app_handle: &tauri::AppHandle<Wry>, result: &mut Vec<ScanType>, root_paths: &Vec<&str>);
 }
 
 pub trait MetaScannable<ScanType> {
-    fn start_scan(&self, result: &mut Vec<ScanType>, root_paths: &Vec<&str>, platform_set: Option<PlatformSet>);
+    fn start_scan(&self, app_handle: &tauri::AppHandle<Wry>, result: &mut Vec<ScanType>, root_paths: &Vec<&str>, platform_set: Option<PlatformSet>);
 }
 
 pub struct ScanManager {}
 
 impl MetaScannable<PlatformInstance> for ScanManager {
-    fn start_scan(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>, platform_set: Option<PlatformSet>) {
+    fn start_scan(&self, app_handle: &tauri::AppHandle<Wry>, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>, platform_set: Option<PlatformSet>) {
         let platforms = platform_set.unwrap_or_default();
         for platform in platforms.platforms.iter() {
             match platform {
               Platform::STEAM => {
-                Steam.start_scan(result, root_paths)
+                Steam.start_scan(app_handle, result, root_paths)
               } 
               Platform::EPIC => {
-                Epic.start_scan(result, root_paths)
+                Epic.start_scan(app_handle, result, root_paths)
               }
             }
         }

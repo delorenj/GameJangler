@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 use crate::scanner::{GameInstance, PlatformInstance, Scannable};
 use crate::scanner::Platform::EPIC;
+use tauri::Wry;
 
 #[cfg(test)]
 mod tests;
@@ -8,7 +9,7 @@ mod tests;
 pub struct Epic;
 
 impl Scannable<PlatformInstance> for Epic {
-    fn start_scan(&self, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>) {
+    fn start_scan(&self, app_handle: &tauri::AppHandle<Wry>, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>) {
         println!("Scanning for Epic platforms on root paths {:?}", root_paths);
         let test = PlatformInstance::new(EPIC, PathBuf::from("C:/some/location").to_owned());
         result.push(test);
@@ -16,7 +17,7 @@ impl Scannable<PlatformInstance> for Epic {
 }
 
 impl Scannable<GameInstance> for Epic {
-    fn start_scan(&self, result: &mut Vec<GameInstance>, root_paths: &Vec<&str>) {
+    fn start_scan(&self, app_handle: &tauri::AppHandle<Wry>, result: &mut Vec<GameInstance>, root_paths: &Vec<&str>) {
         println!("Scanning for Epic games on root paths {:?}", root_paths);
     }
 }

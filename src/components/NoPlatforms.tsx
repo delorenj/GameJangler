@@ -1,15 +1,18 @@
-import {ScanRequest, useScanner} from "@/hooks/scanner"
-import {Platform} from "@/hooks/settings";
-import {useEffect} from "react";
+import { listen } from "@tauri-apps/api/event"
+import { useEffect, useState } from "react"
+
+import { ScanRequest, useScanner } from "@/hooks/scanner"
+import { Platform } from "@/hooks/settings"
 
 export const NoPlatforms: React.FC = () => {
   const { scanForPlatforms, response } = useScanner()
+
   const startScan = async () => {
     const scanRequest: ScanRequest = {
       platformSet: {
         platforms: [Platform.STEAM],
       },
-      rootPaths: ["C:/"],
+      rootPaths: ["/Users/jaraddelorenzo/Library/Application Support"],
     }
     await scanForPlatforms(scanRequest).then(() => {
       console.log("Done scanning")
@@ -20,6 +23,12 @@ export const NoPlatforms: React.FC = () => {
     if (!response) return
     console.log(`Platforms Detected: ${JSON.stringify(response)}`)
   }, [response])
+
+  useEffect(() => {
+    if (!messages) return
+    console.log(`Message Detected: ${JSON.stringify(messages)}`)
+  }, [messages])
+
   return (
     <div className="container mx-auto px-6 py-16 pt-28 text-center">
       <div className="mx-auto max-w-lg">
@@ -36,7 +45,7 @@ export const NoPlatforms: React.FC = () => {
           <button
             type="button"
             className="m-1 h-10 transform rounded-md bg-blue-500 px-4 py-2 text-white transition-colors duration-300 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none"
-            onClick={ async () => await startScan()}
+            onClick={async () => await startScan()}
           >
             Scan for platforms
           </button>
