@@ -1,5 +1,5 @@
 use std::fs::DirEntry;
-use crate::scanner::{GameInstance, PlatformInstance, Scannable};
+use crate::scanner::{GameInstance, Platform, PlatformInstance, Scannable};
 
 extern crate finder;
 
@@ -36,6 +36,7 @@ impl Scannable<PlatformInstance> for Steam {
         let finders = Finder::new("C:\\");
         for i in finders.filter(&is_libraryfolders_file).into_iter() {
             println!("{}", i.path().to_str().unwrap());
+            result.push(PlatformInstance::new(Platform::STEAM, i.path().to_path_buf()))
         }
     }
 }

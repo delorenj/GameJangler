@@ -9,6 +9,7 @@ mod tests;
 use nanoid::nanoid;
 use serde::{Deserialize, Serialize};
 use std::fs::DirEntry;
+use std::path::PathBuf;
 
 use self::{steam::Steam, epic::Epic};
 
@@ -51,15 +52,15 @@ impl Default for PlatformSet {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PlatformInstance {
     id: String, //UUID
-    pub name: String,
-    pub location: String,
+    pub platform: Platform,
+    pub location: PathBuf,
 }
 
 impl PlatformInstance {
-    pub fn new(name: String, location: String) -> Self {
+    pub fn new(platform: Platform, location: PathBuf) -> Self {
         Self {
             id: nanoid!(),
-            name,
+            platform,
             location,
         }
     }

@@ -1,20 +1,25 @@
 import {ScanRequest, useScanner} from "@/hooks/scanner"
 import {Platform} from "@/hooks/settings";
+import {useEffect} from "react";
 
 export const NoPlatforms: React.FC = () => {
   const { scanForPlatforms, response } = useScanner()
   const startScan = async () => {
     const scanRequest: ScanRequest = {
       platformSet: {
-         platforms: [Platform.STEAM]
+        platforms: [Platform.STEAM],
       },
       rootPaths: ["C:/"],
     }
     await scanForPlatforms(scanRequest).then(() => {
-      console.log("F yea: ")
-      console.log(JSON.stringify(response))
+      console.log("Done scanning")
     })
   }
+
+  useEffect(() => {
+    if (!response) return
+    console.log(`Platforms Detected: ${JSON.stringify(response)}`)
+  }, [response])
   return (
     <div className="container mx-auto px-6 py-16 pt-28 text-center">
       <div className="mx-auto max-w-lg">

@@ -4,6 +4,7 @@
 )]
 
 use std::borrow::Borrow;
+use std::path::PathBuf;
 use app::scanner::{Platform, PlatformInstance, ScanManager, MetaScannable, PlatformSet};
 use app::settings::{Loadable, SettingsManager, SettingsSchema};
 use log::error;
@@ -13,10 +14,10 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use tauri::Wry;
 
 #[tauri::command]
-fn scan_for_platform(platform: String) -> Vec<PlatformInstance> {
+fn scan_for_platform(platform: Platform) -> Vec<PlatformInstance> {
     let mut result: Vec<PlatformInstance> = Vec::new();
     let platform =
-        PlatformInstance::new("Test Platform".to_string(), "C:/Some/Test/Path".to_string());
+        PlatformInstance::new(platform, PathBuf::from("C:/Some/Test/Path"));
     result.push(platform);
     return result;
 }
@@ -26,6 +27,7 @@ fn scan_for_platforms(root_paths: Vec<&str>, platform_set: Option<PlatformSet>) 
     let mut result: Vec<PlatformInstance> = Vec::new();
     let scanner = ScanManager {};
     scanner.start_scan(&mut result, &root_paths, platform_set);
+    println!("{:?}", result);
     return result;
 }
 
