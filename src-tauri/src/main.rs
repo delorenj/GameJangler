@@ -36,6 +36,14 @@ async fn scan_for_platforms(app_handle: tauri::AppHandle<Wry>, root_paths: Vec<&
 }
 
 #[tauri::command]
+async fn scan_for_drives(app_handle: tauri::AppHandle<Wry>) -> Result<Vec<PathBuf>, String> {
+    let mut result: Vec<PathBuf> = Vec::new();
+    result.push(PathBuf::from("C:/"));
+    println!("{:?}", result);
+    return Ok(result);
+}
+
+#[tauri::command]
 fn load_settings(app_handle: tauri::AppHandle<Wry>) -> SettingsSchema {
     let app_dir = app_handle.path_resolver().app_dir();
     let manager = SettingsManager::new(app_dir);

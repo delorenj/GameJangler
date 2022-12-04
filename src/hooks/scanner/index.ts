@@ -11,7 +11,23 @@ export interface ScanRequest {
 }
 export const useScanner = () => {
   const [scanningInProgress, setScanningInProgress] = useState<boolean>(false)
-  const [response, setResponse] = useState<PlatformInstance[]>()
+  const [response, setResponse] = useState<PlatformInstance[]>([])
+  const [drives, setDrives] = useState<string[]>([])
+
+  const scanForDrives = async () => {
+    setScanningInProgress(true)
+    await invoke<string[]>("scan_for_drives")
+      .then((response) => {
+        setDrives(response)
+      })
+      .catch((e) => {
+        setScanningInProgress(false)
+        console.log(`There was an error scanning for available drives: ${e}`)
+      })
+      .finally(() => {
+        setScanningInProgress(false)
+      })
+  }
 
   const scanForPlatforms = async (scanRequest: ScanRequest) => {
     setScanningInProgress(true)
@@ -31,5 +47,5 @@ export const useScanner = () => {
       })
   }
 
-  return { scanningInProgress, scanForPlatforms, response }
+  return { scanningInProgress, scanForPlatforms, scanForDrives, response }
 }

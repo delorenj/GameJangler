@@ -1,9 +1,8 @@
-import { listen } from "@tauri-apps/api/event"
 import { useEffect, useState } from "react"
 
+import { useGlobalContext } from "@/context/state"
 import { ScanRequest, useScanner } from "@/hooks/scanner"
 import { Platform } from "@/hooks/settings"
-import {useGlobalContext} from "@/context/state";
 
 export const NoPlatforms: React.FC = () => {
   const { scanForPlatforms, response } = useScanner()
