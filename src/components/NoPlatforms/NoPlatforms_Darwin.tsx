@@ -4,7 +4,7 @@ import { useGlobalContext } from "@/context/state"
 import { ScanRequest, useScanner } from "@/hooks/scanner"
 import { Platform } from "@/hooks/settings"
 
-export const NoPlatforms: React.FC = () => {
+export const NoPlatforms_Darwin: React.FC = () => {
   const { scanForPlatforms, response } = useScanner()
   const { serverMessages } = useGlobalContext()
 
@@ -13,7 +13,7 @@ export const NoPlatforms: React.FC = () => {
       platformSet: {
         platforms: [Platform.STEAM],
       },
-      rootPaths: ["C:/"],
+      rootPaths: ["/"],
     }
     await scanForPlatforms(scanRequest).then(() => {
       console.log("Done scanning")
