@@ -84,6 +84,7 @@ export type GlobalContextType = {
   currentPage: PageName
   setCurrentPage: (currentPage: PageName) => void
   serverState: ServerState
+  serverMessages: string[]
 }
 
 export const useGlobalContext = () => {

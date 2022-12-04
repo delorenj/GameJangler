@@ -3,16 +3,18 @@ import { useEffect, useState } from "react"
 
 import { ScanRequest, useScanner } from "@/hooks/scanner"
 import { Platform } from "@/hooks/settings"
+import {useGlobalContext} from "@/context/state";
 
 export const NoPlatforms: React.FC = () => {
   const { scanForPlatforms, response } = useScanner()
+  const { serverMessages } = useGlobalContext()
 
   const startScan = async () => {
     const scanRequest: ScanRequest = {
       platformSet: {
         platforms: [Platform.STEAM],
       },
-      rootPaths: ["/Users/jaraddelorenzo/Library/Application Support"],
+      rootPaths: ["C:/"],
     }
     await scanForPlatforms(scanRequest).then(() => {
       console.log("Done scanning")
@@ -25,9 +27,9 @@ export const NoPlatforms: React.FC = () => {
   }, [response])
 
   useEffect(() => {
-    if (!messages) return
-    console.log(`Message Detected: ${JSON.stringify(messages)}`)
-  }, [messages])
+    if (!serverMessages) return
+    console.log(`Message Detected: ${JSON.stringify(serverMessages)}`)
+  }, [serverMessages])
 
   return (
     <div className="container mx-auto px-6 py-16 pt-28 text-center">
