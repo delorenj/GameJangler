@@ -6,6 +6,12 @@ export enum Platform {
   EPIC = "EPIC",
 }
 
+export enum OS {
+  WINDOWS = "windows",
+  DARWIN = "darwin",
+  LINUX = "linux",
+}
+
 export interface PlatformInstance {
   id: string
   platform: Platform
@@ -13,6 +19,7 @@ export interface PlatformInstance {
 }
 
 export interface SettingsSchema {
+  os: OS
   platforms: PlatformInstance[]
 }
 

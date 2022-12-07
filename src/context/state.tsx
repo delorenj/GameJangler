@@ -73,7 +73,7 @@ export const GlobalContextWrapper = ({ children }: GlobalContextProps) => {
 
   useEffect(() => {
     console.log("About to invoke listener()")
-    listener().catch(e => `Listener promise exception: ${JSON.stringify(e)}`)
+    listener().catch((e) => `Listener promise exception: ${JSON.stringify(e)}`)
   }, [])
 
   return <GlobalContext.Provider value={sharedState}>{children}</GlobalContext.Provider>
