@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { Container } from "@/components/Container"
 import { useGlobalContext } from "@/context/state"
 
-const Home: NextPage = () => {
+const Saves: NextPage = () => {
   const { setCurrentPage } = useGlobalContext()
 
   useEffect(() => {
@@ -18,4 +18,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default Saves

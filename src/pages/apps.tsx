@@ -1,14 +1,14 @@
 import type { NextPage } from "next"
+import * as OS from "os"
 import { useEffect } from "react"
 
 import { Container } from "@/components/Container"
+import { NoPlatforms } from "@/components/NoPlatforms/NoPlatforms";
+import { NoPlatforms_Darwin } from "@/components/NoPlatforms/NoPlatforms_Darwin";
+import { NoPlatforms_Linux } from "@/components/NoPlatforms/NoPlatforms_Linux";
+import { NoPlatforms_Windows } from "@/components/NoPlatforms/NoPlatforms_Windows";
 import { useGlobalContext } from "@/context/state"
 import { useSettings } from "@/hooks/settings"
-import { NoPlatforms } from "@/components/NoPlatforms/NoPlatforms";
-import * as OS from "os";
-import { NoPlatforms_Linux } from "@/components/NoPlatforms/NoPlatforms_Linux";
-import { NoPlatforms_Darwin } from "@/components/NoPlatforms/NoPlatforms_Darwin";
-import { NoPlatforms_Windows } from "@/components/NoPlatforms/NoPlatforms_Windows";
 
 const Apps: NextPage = () => {
   const { settings } = useSettings()
@@ -25,7 +25,7 @@ const Apps: NextPage = () => {
       )}
       {!settings || (!settings.platforms && <NoPlatforms />)}
     </Container>
-  );
+  )
 }
 
 export default Apps

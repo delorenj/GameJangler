@@ -3,11 +3,12 @@
     windows_subsystem = "windows"
 )]
 
-use std::path::PathBuf;
-use app::scanner::{Platform, PlatformInstance, ScanManager, MetaScannable, PlatformSet};
+use app::scanner::{MetaScannable, Platform, PlatformInstance, PlatformSet, ScanManager};
 use app::settings::{Loadable, SettingsManager, SettingsSchema};
-use tauri::Wry;
+use std::path::PathBuf;
+use std::process::Command;
 use tauri::Manager;
+use tauri::Wry;
 use tokio::sync::mpsc;
 use tokio::sync::Mutex;
 use tracing::info;
@@ -20,14 +21,17 @@ struct AsyncProcInputTx {
 #[tauri::command]
 fn scan_for_platform(platform: Platform) -> Vec<PlatformInstance> {
     let mut result: Vec<PlatformInstance> = Vec::new();
-    let platform =
-        PlatformInstance::new(platform, PathBuf::from("C:/Some/Test/Path"));
+    let platform = PlatformInstance::new(platform, PathBuf::from("C:/Some/Test/Path"));
     result.push(platform);
     return result;
 }
 
 #[tauri::command]
-async fn scan_for_platforms(app_handle: tauri::AppHandle<Wry>, root_paths: Vec<&str>, platform_set: Option<PlatformSet>) -> Result<Vec<PlatformInstance>, String> {
+async fn scan_for_platforms(
+    app_handle: tauri::AppHandle<Wry>,
+    root_paths: Vec<&str>,
+    platform_set: Option<PlatformSet>,
+) -> Result<Vec<PlatformInstance>, String> {
     let mut result: Vec<PlatformInstance> = Vec::new();
     let scanner = ScanManager {};
     scanner.start_scan(&app_handle, &mut result, &root_paths, platform_set);
@@ -50,6 +54,51 @@ fn load_settings(app_handle: tauri::AppHandle<Wry>) -> SettingsSchema {
     manager.load()
 }
 
+#[tauri::command]
+fn show_in_folder(path: String) {
+    #[cfg(target_os = "windows")]
+    {
+        Command::new("explorer")
+            .args(["/select,", &path]) // The comma after select is not a typo
+            .spawn()
+            .unwrap();
+    }
+
+    #[cfg(target_os = "linux")]
+    {
+        if path.contains(",") {
+            // see https://gitlab.freedesktop.org/dbus/dbus/-/issues/76
+            let new_path = match metadata(&path).unwrap().is_dir() {
+                true => path,
+                false => {
+                    let mut path2 = PathBuf::from(path);
+                    path2.pop();
+                    path2.into_os_string().into_string().unwrap()
+                }
+            };
+            Command::new("xdg-open").arg(&new_path).spawn().unwrap();
+        } else {
+            Command::new("dbus-send")
+                .args([
+                    "--session",
+                    "--dest=org.freedesktop.FileManager1",
+                    "--type=method_call",
+                    "/org/freedesktop/FileManager1",
+                    "org.freedesktop.FileManager1.ShowItems",
+                    format!("array:string:\"file://{path}\"").as_str(),
+                    "string:\"\"",
+                ])
+                .spawn()
+                .unwrap();
+        }
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        Command::new("open").args(["-R", &path]).spawn().unwrap();
+    }
+}
+
 fn main() {
     tracing_subscriber::fmt::init();
 
@@ -60,13 +109,15 @@ fn main() {
         .manage(AsyncProcInputTx {
             inner: Mutex::new(async_proc_input_tx),
         })
-        .invoke_handler(tauri::generate_handler![load_settings, scan_for_platform, scan_for_platforms])
+        .invoke_handler(tauri::generate_handler![
+            load_settings,
+            scan_for_platform,
+            scan_for_platforms,
+            show_in_folder
+        ])
         .setup(|app| {
             tauri::async_runtime::spawn(async move {
-                async_process_model(
-                    async_proc_input_rx,
-                    async_proc_output_tx,
-                ).await
+                async_process_model(async_proc_input_rx, async_proc_output_tx).await
             });
 
             let app_handle = app.handle();
@@ -92,10 +143,7 @@ pub fn rs2js<R: tauri::Runtime>(message: String, manager: &impl Manager<R>) {
 }
 
 #[tauri::command]
-async fn js2rs(
-    message: String,
-    state: tauri::State<'_, AsyncProcInputTx>,
-) -> Result<(), String> {
+async fn js2rs(message: String, state: tauri::State<'_, AsyncProcInputTx>) -> Result<(), String> {
     info!(?message, "js2rs");
     let async_proc_input_tx = state.inner.lock().await;
     async_proc_input_tx

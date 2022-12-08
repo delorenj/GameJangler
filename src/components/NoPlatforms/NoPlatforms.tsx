@@ -16,11 +16,12 @@ const components = {
 
 export const NoPlatforms: React.FC = () => {
   const { settings } = useSettings()
-  const ComponentRef = useRef<FC>(Loader)
+  const [ComponentRef, setComponentRef] = useState<FC>(() => Loader)
 
   useEffect(() => {
     if (!settings || !settings.os) return
-    ComponentRef.current = components[settings.os]
+    console.log(`Settings OS detected!: ${settings.os}`)
+    setComponentRef(() => components[settings.os])
   }, [settings])
 
   return (
@@ -35,7 +36,7 @@ export const NoPlatforms: React.FC = () => {
           you know where they are, you can just add them manually.
         </p>
 
-        <ComponentRef.current />
+        <ComponentRef />
       </div>
       <LogoFooter />
     </div>
