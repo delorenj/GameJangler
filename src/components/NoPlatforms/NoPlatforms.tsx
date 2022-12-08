@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react"
 
 import { Loader } from "@/components/Loader"
 import { LogoFooter } from "@/components/LogoFooter"

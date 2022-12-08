@@ -1,5 +1,5 @@
 import { listen } from "@tauri-apps/api/event"
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 
 const GlobalContext = createContext({})
 

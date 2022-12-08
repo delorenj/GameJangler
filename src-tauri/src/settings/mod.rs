@@ -1,15 +1,25 @@
 #[cfg(test)]
 mod tests;
 
+use std::env::consts::OS;
 use crate::scanner::PlatformInstance;
 use serde::{Deserialize, Serialize};
 use simplelog::info;
 use std::path::{Path, PathBuf};
 use std::fs;
 
+#[derive(Debug, strum::EnumIter, Serialize, Deserialize)]
+pub enum OsType {
+    WINDOWS(String),
+    DARWIN,
+    LINUX,
+    UNSUPPORTED
+}
+
 #[derive(Default, Serialize, Deserialize, Debug)]
 pub struct SettingsSchema {
     pub platforms: Option<Vec<PlatformInstance>>,
+    pub os: Option<String>
 }
 
 pub const SETTINGS_FILE: &str = "settings.json";
@@ -17,6 +27,15 @@ pub const SETTINGS_FILE: &str = "settings.json";
 pub struct SettingsManager {
     pub settings_path: PathBuf,
     pub settings: Option<SettingsSchema>
+}
+
+pub fn get_os_type() -> String {
+    return match std::env::consts::OS {
+        "windows" => "windows".to_string(),
+        "macos" => "darwin".to_string(),
+        "linux" => "linux".to_string(),
+        &_ => "unsupported".to_string()
+    }
 }
 
 impl SettingsManager {
@@ -52,7 +71,8 @@ impl Loadable for SettingsManager {
     }
     
     fn init(&self) -> SettingsSchema {
-        let data = SettingsSchema::default();
+        let mut data = SettingsSchema::default();
+        data.os = Some(get_os_type());
 
         if !self.settings_path.exists() {
             fs::create_dir(&self.settings_path).expect("Error creating config directory!");
