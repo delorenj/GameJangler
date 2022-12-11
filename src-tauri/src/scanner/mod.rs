@@ -1,16 +1,17 @@
 pub mod epic;
 pub mod steam;
 
-use strum::{IntoEnumIterator, EnumIter};
+use strum::{EnumIter, IntoEnumIterator};
 
 #[cfg(test)]
 mod tests;
+use crate::settings::SettingsManager;
 use nanoid::nanoid;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 use tauri::Wry;
 
-use self::{steam::Steam, epic::Epic};
+use self::{epic::Epic, steam::Steam};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct GameInstance {
@@ -37,13 +38,13 @@ pub enum Platform {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PlatformSet {
-    platforms: Vec<Platform>
+    platforms: Vec<Platform>,
 }
 
 impl Default for PlatformSet {
     fn default() -> PlatformSet {
         PlatformSet {
-         platforms: Platform::iter().collect::<Vec<Platform>>()
+            platforms: Platform::iter().collect::<Vec<Platform>>(),
         }
     }
 }
@@ -66,27 +67,41 @@ impl PlatformInstance {
 }
 
 pub trait Scannable<ScanType> {
-    fn start_scan(&self, app_handle: &tauri::AppHandle<Wry>, result: &mut Vec<ScanType>, root_paths: &Vec<&str>);
+    fn start_scan(
+        &self,
+        app_handle: &tauri::AppHandle<Wry>,
+        result: &mut Vec<ScanType>,
+        root_paths: &Vec<&str>,
+    );
 }
 
 pub trait MetaScannable<ScanType> {
-    fn start_scan(&self, app_handle: &tauri::AppHandle<Wry>, result: &mut Vec<ScanType>, root_paths: &Vec<&str>, platform_set: Option<PlatformSet>);
+    fn start_scan(
+        &self,
+        app_handle: &tauri::AppHandle<Wry>,
+        result: &mut Vec<ScanType>,
+        root_paths: &Vec<&str>,
+        platform_set: Option<PlatformSet>,
+    );
 }
 
 pub struct ScanManager {}
 
 impl MetaScannable<PlatformInstance> for ScanManager {
-    fn start_scan(&self, app_handle: &tauri::AppHandle<Wry>, result: &mut Vec<PlatformInstance>, root_paths: &Vec<&str>, platform_set: Option<PlatformSet>) {
+    fn start_scan(
+        &self,
+        app_handle: &tauri::AppHandle<Wry>,
+        result: &mut Vec<PlatformInstance>,
+        root_paths: &Vec<&str>,
+        platform_set: Option<PlatformSet>,
+    ) {
         let platforms = platform_set.unwrap_or_default();
         for platform in platforms.platforms.iter() {
             match platform {
-              Platform::STEAM => {
-                Steam.start_scan(app_handle, result, root_paths)
-              } 
-              Platform::EPIC => {
-                Epic.start_scan(app_handle, result, root_paths)
-              }
+                Platform::STEAM => Steam.start_scan(app_handle, result, root_paths),
+                Platform::EPIC => Epic.start_scan(app_handle, result, root_paths),
             }
         }
+        SettingsManager::write_platforms(&result)
     }
 }

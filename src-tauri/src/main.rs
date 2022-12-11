@@ -33,9 +33,12 @@ async fn scan_for_platforms(
     platform_set: Option<PlatformSet>,
 ) -> Result<Vec<PlatformInstance>, String> {
     let mut result: Vec<PlatformInstance> = Vec::new();
+    let app_dir = app_handle.path_resolver().app_dir();
+    let manager = SettingsManager::new(app_dir);
     let scanner = ScanManager {};
     scanner.start_scan(&app_handle, &mut result, &root_paths, platform_set);
     println!("{:?}", result);
+    manager.write_platforms(&result);
     return Ok(result);
 }
 
