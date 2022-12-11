@@ -6,7 +6,7 @@ import { Platform } from "@/hooks/settings"
 
 export const NoPlatforms_Windows: React.FC = () => {
   const { scanForPlatforms, response } = useScanner()
-  const { serverMessages } = useGlobalContext()
+  const { serverMessage } = useGlobalContext()
 
   const startScan = async () => {
     const scanRequest: ScanRequest = {
@@ -26,9 +26,9 @@ export const NoPlatforms_Windows: React.FC = () => {
   }, [response])
 
   useEffect(() => {
-    if (!serverMessages) return
-    console.log(`Message Detected: ${JSON.stringify(serverMessages)}`)
-  }, [serverMessages])
+    if (!serverMessage) return
+    console.log(`Message Detected: ${JSON.stringify(serverMessage)}`)
+  }, [serverMessage])
 
   return (
     <div className="mx-auto mt-6 w-full max-w-sm focus-within:border-blue-400 focus-within:ring focus-within:ring-blue-300 focus-within:ring-opacity-40 dark:border-gray-700 dark:focus-within:border-blue-300">

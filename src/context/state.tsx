@@ -43,20 +43,14 @@ interface GlobalContextProps {
 
 export const GlobalContextWrapper = ({ children }: GlobalContextProps) => {
   const [currentPage, setCurrentPage] = useState<PageName>()
-  const [serverMessages, setServerMessages] = useState<string[]>([])
+  const [serverMessage, setServerMessage] = useState<string>()
   const [serverState] = useState<ServerState>()
 
   const sharedState = {
     currentPage,
     setCurrentPage,
     serverState,
-    serverMessages,
-  }
-
-  const addMessage = (msg: string) => {
-    const new_msg: string[] = serverMessages
-    new_msg.push(msg)
-    setServerMessages(new_msg)
+    serverMessage,
   }
 
   const listener = async () => {
@@ -65,8 +59,8 @@ export const GlobalContextWrapper = ({ children }: GlobalContextProps) => {
       console.log(`Got message from server!: ${JSON.stringify(event)}`)
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const input: string = event.payload
-      console.log(`About to add message payload to serverMessages: ${input}`)
-      addMessage(input)
+      console.log(`About to set message payload to serverMessage: ${input}`)
+      return setServerMessage(input)
     })
     console.log("After the await listen")
   }
@@ -84,7 +78,7 @@ export type GlobalContextType = {
   currentPage: PageName
   setCurrentPage: (currentPage: PageName) => void
   serverState: ServerState
-  serverMessages: string[]
+  serverMessage: string[]
 }
 
 export const useGlobalContext = () => {
